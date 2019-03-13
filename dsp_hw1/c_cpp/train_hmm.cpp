@@ -123,7 +123,6 @@ void train_sample(vector<int> &seq, double *sigma_gamma_0, double sigma_epsilon[
     }
 }
 
-
 void train_epoch(){
     // TODO: initialize as zero
     double sigma_gamma_0[state_num] = {0};
