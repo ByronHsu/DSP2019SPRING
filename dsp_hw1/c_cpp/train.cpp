@@ -14,7 +14,7 @@ const int state_num = 6;
 const int time_num = 50;
 const int observation_num = 6;
 
-void train_sample(vector<int> &seq, double *sigma_gamma_0, double sigma_epsilon[][state_num], double *sigma_gamma, double sigma_gamma_eqo[][observation_num]){
+void train_sample(vector<int> &seq, double *sigma_gamma_0, double sigma_epsilon[][state_num], double *sigma_gamma, double sigma_gamma_eqo[][observation_num], double *sigma_gamma_all){
     // Calculate alpha(dim: state x time = 6 x 50)
     double alpha[time_num][state_num];
     for(int t = 0; t < time_num; t++){
@@ -115,12 +115,19 @@ void train_sample(vector<int> &seq, double *sigma_gamma_0, double sigma_epsilon[
     // update sigma_gamma_eqo
     for(int k = 0; k < observation_num; k++){
         for(int i = 0; i < state_num; i++){
-            for(int t = 0; t < time_num - 1; t++){
+            for(int t = 0; t < time_num; t++){
                 if(seq[t] == k)
                     sigma_gamma_eqo[k][i] += gamma[t][i];
             }
         }
     }
+
+    // update sigma_gamma_all
+    for(int i = 0; i < state_num; i++){
+        for(int t = 0; t < time_num; t++){
+            sigma_gamma_all[i] += gamma[t][i];
+        }
+    } 
 }
 
 void train_epoch(){
@@ -128,9 +135,10 @@ void train_epoch(){
     double sigma_gamma_0[state_num] = {0};
     double sigma_epsilon[state_num][state_num] = {0};
     double sigma_gamma[state_num] = {0};
+    double sigma_gamma_all[state_num] = {0};
     double sigma_gamma_eqo[observation_num][state_num] = {0}; // state equals to observation
     for(int i = 0; i < data.size(); i++){
-        train_sample(data[i], sigma_gamma_0, sigma_epsilon, sigma_gamma, sigma_gamma_eqo);
+        train_sample(data[i], sigma_gamma_0, sigma_epsilon, sigma_gamma, sigma_gamma_eqo, sigma_gamma_all);
     }
 
     printf("PI\n");
@@ -159,7 +167,7 @@ void train_epoch(){
     
     for(int k = 0; k < observation_num; k++){
         for(int i = 0; i < state_num; i++){
-            model.observation[k][i] = sigma_gamma_eqo[k][i] / sigma_gamma[i];
+            model.observation[k][i] = sigma_gamma_eqo[k][i] / sigma_gamma_all[i];
             printf("%f ", model.observation[k][i]);
         }
         printf("\n");
@@ -177,8 +185,10 @@ void train_epoch(){
 }
 
 void train(int iter){
-    for(int i = 0; i < iter; i++)
+    for(int i = 0; i < iter; i++){
+        printf("Iteration = %d\n", i);
         train_epoch();
+    }
 }
 /*
 Execution format:
