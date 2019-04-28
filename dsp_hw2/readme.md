@@ -19,9 +19,11 @@ bash 04_testing.sh
 
 ## 4. Describe training process and accuracy (30%)
 - Best
+  
   - Number of states: 12
   - Gaussian mixtures: 5
   - iterations: 3
   - Corr: 97.47%, Acc: 96.66%
-- How some changes effect the performance: 
+- How some changes effect the performance:
+   
     <img src="assets/experiment.png" width="500px">
