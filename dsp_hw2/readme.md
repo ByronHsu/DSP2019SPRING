@@ -24,4 +24,4 @@ bash 04_testing.sh
   - iterations: 3
   - Corr: 97.47%, Acc: 96.66%
 - How some changes effect the performance: 
-<img src="assets/experiment.png" width="500px">
+    <img src="assets/experiment.png" width="500px">
