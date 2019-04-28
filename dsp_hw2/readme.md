@@ -15,7 +15,7 @@ bash 04_testing.sh
 <img src='assets/baseline.png' width='500px'>
 
 ## 3. Improve Accuracy (40%)
-<img src='assets/improved.png' width='500px'>
+<img src='assets/improve.png' width='500px'>
 
 ## 4. Describe training process and accuracy (30%)
 - Best
